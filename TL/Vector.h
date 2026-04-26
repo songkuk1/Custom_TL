@@ -18,9 +18,10 @@ class Vector
 private:
 	size_t _size;
 	size_t _capacity;
+	T* arr = nullptr;
 	T* head;
 	T* tail;
-	T* arr = nullptr;
+	
 
 public:
 
@@ -65,6 +66,11 @@ public:
 		}
 	}
 
+	~Vector()
+	{
+		delete arr;
+	}
+
 	T& operator [](size_t idx)
 	{
 		//들어있는 원소 수보다 높은 인덱스값을 넣었을때 assert
@@ -95,7 +101,7 @@ public:
 		//여유공간이 없으면 재할당
 		if(_capacity == _size)
 		{
-			//재할당이 일어나야하므로 T& value로 들어온값이 사라져버리니 임시저장
+			//재할당이 일어나야하므로 T& value로 들어온값이 사라져버리니 값만 임시저장
 			T tmp = lvalue;
 
 			reserve();
@@ -106,7 +112,14 @@ public:
 			new (&arr[_size++]) T(static_cast<T&&>(lvalue));
 	}
 
+	void pop_back()
+	{
+		if(_size == 0)
+			assert(_size > 1 && "pop_back() called on an empty vector");
 
+		--_size;
+		arr[_size].~T();
+	}
 
 	void reserve()
 	{
