@@ -8,22 +8,38 @@ namespace JTL
 template <typename T>
 class Vector
 {
-
-	class iterator
-	{
-		T* data;
-
-	};
-
 private:
 	size_t _size;
 	size_t _capacity;
 	T* arr = nullptr;
-	T* head;
-	T* tail;
-	
 
 public:
+	struct iterator
+	{
+		T* ptr;
+
+		T& operator*() const{return *ptr;};
+
+		iterator& operator++()
+		{
+			ptr++;
+			return *this;
+		}
+
+		bool operator!=(const iterator& other)const
+		{
+			return ptr != other.ptr;
+		}
+
+		int operator-(const iterator& other)
+		{
+			return ptr - other.ptr;;
+
+		}
+	};
+
+	iterator begin() { return iterator{ arr }; }
+	iterator end() { return iterator{ arr + _size }; }
 
 	//초기화 값을 안주면 쓰레기값을 넣어둠
 	Vector(size_t s = 0)
@@ -34,15 +50,9 @@ public:
 		if(s > 0)
 		{
 			arr = (T*)malloc(sizeof(T) * s);
-			head = &arr[0];
-			tail = &arr[s];
-		}
-		else
-		{
-			head = nullptr;
-			tail = nullptr;
 
 		}
+
 	}
 
 	//초기화 값을 주면 넣어줌
@@ -55,15 +65,9 @@ public:
 		{
 			arr = (T*)malloc(sizeof(T) * s);
 			memset(arr, init, sizeof(T) * s);
-			head = &arr[0];
-			tail = &arr[s];
-		}
-		else
-		{
-			head = nullptr;
-			tail = nullptr;
 
 		}
+
 	}
 
 	~Vector()
@@ -87,11 +91,14 @@ public:
 		if (_capacity == _size)
 		{
 			reserve();
-
-			new (&arr[_size++]) T(rvalue);
+			new (&arr[_size++]) T(static_cast<T&&>(rvalue));
 		}
 		else
-			new (&arr[_size++]) T(rvalue);
+		{
+			new (&arr[_size++]) T(static_cast<T&&>(rvalue));
+
+		}
+			
 	}
 
 
@@ -109,7 +116,10 @@ public:
 			new (&arr[_size++]) T(static_cast<T&&>(tmp));
 		}
 		else
+		{
 			new (&arr[_size++]) T(static_cast<T&&>(lvalue));
+		}
+			
 	}
 
 	void pop_back()
@@ -142,6 +152,18 @@ public:
 		free(arr);
 		//새로 연결
 		arr = new_arr;
+	}
+
+	size_t size()
+	{
+		return _size;
+
+	}
+	
+	size_t capacity()
+	{
+		return _capacity;
+
 	}
 
 };
