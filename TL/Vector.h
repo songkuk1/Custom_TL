@@ -2,6 +2,7 @@
 #include <cstring>
 #include <stdlib.h>
 #include <cassert>
+#include "iterator.h"
 
 namespace JTL
 {
@@ -13,12 +14,12 @@ private:
 	size_t _capacity;
 	T* arr = nullptr;
 
-public:
+	
 	struct iterator
 	{
 		T* ptr;
 
-		T& operator*() const{return *ptr;};
+		T& operator*() const { return *ptr; };
 
 		iterator& operator++()
 		{
@@ -38,6 +39,7 @@ public:
 		}
 	};
 
+public:
 	iterator begin() { return iterator{ arr }; }
 	iterator end() { return iterator{ arr + _size }; }
 
