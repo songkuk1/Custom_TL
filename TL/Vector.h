@@ -21,9 +21,27 @@ private:
 
 		T& operator*() const { return *ptr; };
 
+		iterator& operator++(int)
+		{
+			ptr++;
+			return *this;
+		}
+
 		iterator& operator++()
 		{
 			ptr++;
+			return *this;
+		}
+
+		iterator& operator--()
+		{
+			ptr--;
+			return *this;
+		}
+
+		iterator& operator--(int)
+		{
+			ptr--;
 			return *this;
 		}
 
@@ -32,10 +50,45 @@ private:
 			return ptr != other.ptr;
 		}
 
+
 		int operator-(const iterator& other)
 		{
-			return ptr - other.ptr;;
+			return ptr - other.ptr;
 
+		}
+
+		iterator operator+(const int a)
+		{
+			return iterator{ ptr + a };
+
+		}
+
+
+
+		iterator operator-(const int a)
+		{
+			return iterator{ ptr - a };
+
+		}
+
+		bool operator<(const iterator& other)const
+		{
+			return ptr < other.ptr;
+		}
+
+		bool operator>(const iterator& other)const
+		{
+			return ptr > other.ptr;
+		}
+
+		bool operator<=(const iterator& other)const
+		{
+			return ptr <= other.ptr;
+		}
+
+		bool operator>=(const iterator& other)const
+		{
+			return ptr >= other.ptr;
 		}
 	};
 

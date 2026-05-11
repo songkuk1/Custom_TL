@@ -8,22 +8,17 @@ using namespace std;
 
 int main(void)
 {
-	JTL::List<int> ls;
+	JTL::Vector<string> v(5);
+
+	v.push_back("b");
+	v.push_back("a");
+	v.push_back("ab");
 
 
-	ls.push_back(1);
-	ls.push_back(2);
-	ls.push_back(3);
+	JTL::sort(v.begin(),v.end());
 
-	for(auto& e : ls)
+	for(auto& e : v)
 		cout<<e<<" ";
 
-
-	ls.insert(ls.begin(),3);
-
-	cout<<'\n';
-
-	for (auto& e : ls)
-		cout << e << " ";
 	return 0;
 }
