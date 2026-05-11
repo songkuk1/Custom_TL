@@ -67,3 +67,49 @@ Inside the function, an rvalue reference parameter is treated as an lvalue becau
 so lists have poor cache locality
 
 
+## 3.sort
+
+### Characteristics
+
+1.implementation of the Quick Sort algorithm
+
+### Private Implementation
+partition() : For high-performance,this function recursively divdes the container into smaller subranges until each sub-container reaches a size of one.
+The partitioning process utilizes a pivot as a reference point to rearrange elements, ensuring that all values smaller than the pivot are moved to the left and larger values to the right.
+
+In my case, I chose the middle element of the container as the pivot 
+
+and then,low pointer starting from the beginning of container moves right until finding value greater than or equal pivot
+Simultaneously, high pointer starting from the end of container moves left until finding number that smaller than or equal pivot
+```
+        while (true)
+        {
+            while (low < end && *low < pivot) ++low;  
+            while (high >= begin && *high > pivot) --high;
+
+            if (low >= high)
+                return high; 
+
+            iter_swap(low, high);
+            ++low;
+            --high;
+        }
+```
+If the low pointer is still to the left of the high pointer, the two elements are swapped. 
+This ensures that both values are placed correctly relative to the pivot. 
+Furthermore, if all elements in the container are identical, the pointers would stay in place, causing an infinite loop. To prevent this, both the low and high pointers must be manually advanced by one position after each swap.
+
+Otherwise, the function returns the high pointer, which serves as the boundary for the next recursive calls
+```
+    void sort(Iterator begin, Iterator end)
+    {
+        if ((end - 1) - begin <= 1) return;
+
+        Iterator q = partition(begin, end);
+
+        sort(begin, q + 1);
+        sort(q + 1, end);  
+    }
+```
+
+iter_swap() : Swaps the values pointed to by two iterators using move semantics
