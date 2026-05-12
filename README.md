@@ -113,3 +113,21 @@ Otherwise, the function returns the high pointer, which serves as the boundary f
 ```
 
 iter_swap() : Swaps the values pointed to by two iterators using move semantics
+
+
+## 4.find
+
+### Characteristics
+1.This function uses three arguments, start, end, target
+
+start : Iterator as starting point for Search
+
+end : Iterator as end point for Search
+
+target : value that want to find
+
+
+
+
+
+
